@@ -1,4 +1,5 @@
 use std::{env, process};
+use geocoding::{Coordinate, Forward, Opencage, Point};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
