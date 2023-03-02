@@ -18,6 +18,8 @@ fn main() {
 
     for address in file.addresses {
         let res: Vec<Point<f64>> = osm.forward(&address).unwrap();
+        let longitude = res[0].x();
+        let latitude = res[0].y();
     }
 }
 
