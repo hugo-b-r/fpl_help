@@ -1,7 +1,12 @@
-use std::env;
+use std::{env, process};
 
 fn main() {
-    println!("Hello, world!");
+    let args: Vec<String> = env::args().collect();
+
+    let config = Config::new(&args).unwrap_or_else(|err| {
+        eprintln!("Problem found when getting arguments: {}", err);
+        process::exit(1);
+    });
 }
 
 struct Config {
@@ -10,7 +15,7 @@ struct Config {
 
 impl Config {
     fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 1 {
+        if args.len() < 2 {
             return Err("Please give a file name!");
         }
 
