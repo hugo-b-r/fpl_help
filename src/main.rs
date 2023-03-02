@@ -1,10 +1,10 @@
 use std::{env, process};
-use geocoding::{Forward, Opencage, Point};
-use geo_types::Coord;
+use geocoding::{Openstreetmap, Forward, Point};
 use std::fs::File;
-use std::io::{self, prelude::*, BufReader};
+use std::io::{prelude::*, BufReader};
 
 fn main() {
+    let osm = Openstreetmap::new();
     let args: Vec<String> = env::args().collect();
 
     let config = Config::new(&args).unwrap_or_else(|err| {
@@ -15,6 +15,10 @@ fn main() {
         eprintln!("Problem found when loadign file: {}", err);
         process::exit(1);
     });
+
+    for address in file.addresses {
+        let res: Vec<Point<f64>> = osm.forward(&address).unwrap();
+    }
 }
 
 struct Config {
@@ -45,7 +49,7 @@ impl FPL {
         let file_name = config.file_name.clone();
 
         let file = File::open(&file_name).unwrap_or_else(|err| {
-            eprintln!("File not found");
+            eprintln!("File not found; {}", err);
             process::exit(1);
         });
         let file_reader = BufReader::new(file);
