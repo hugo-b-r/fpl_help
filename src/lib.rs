@@ -1,4 +1,4 @@
-use std::{env, process};
+use std::process;
 use geocoding::{Openstreetmap, Forward, Point};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
@@ -23,15 +23,13 @@ impl Config {
 }
 
 pub struct FPL {
-    file_name: String,
     addresses: Vec<String>,
 }
 
 impl FPL {
     pub fn new(config: Config) -> Result<FPL, &'static str> {
-        let file_name = config.file_name.clone();
 
-        let file = File::open(&file_name).unwrap_or_else(|err| {
+        let file = File::open(config.file_name).unwrap_or_else(|err| {
             eprintln!("File not found; {}", err);
             process::exit(1);
         });
@@ -43,7 +41,6 @@ impl FPL {
             addresses.push(line.unwrap().to_string());
         }
         Ok(FPL {
-            file_name,
             addresses,
         })
     }
