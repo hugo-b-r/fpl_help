@@ -27,3 +27,7 @@ impl Config {
         })
     }
 }
+
+struct File {
+    addresses: Vec<String>,
+}
