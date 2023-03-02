@@ -26,12 +26,41 @@ fn main() {
         let longitude_dms = DMS::from_decimal_degrees(longitude_decimal, false);
         let latitude_dms = DMS::from_decimal_degrees(latitude_decimal, false);
 
+
+        let latitude_deg_str: String;
+        let latitude_min_str: String;
+        let longitude_deg_str: String;
+        let longitude_min_str: String;
+
+        if longitude_dms.degrees < 10 {
+            longitude_deg_str = format!("00{}", longitude_dms.degrees.to_string());
+        } else if longitude_dms.degrees < 100 { //longitude is max 180 compared to 90 for latitude
+            longitude_deg_str = format!("0{}", longitude_dms.degrees);
+        } else {
+            longitude_deg_str = longitude_dms.degrees.to_string();
+        }
+        if longitude_dms.minutes < 10 {
+            longitude_min_str = format!("0{}", longitude_dms.minutes.to_string());
+        } else {
+            longitude_min_str = longitude_dms.minutes.to_string();
+        }
+        if latitude_dms.degrees < 10 {
+            latitude_deg_str = format!("0{}", latitude_dms.degrees);
+        } else {
+            latitude_deg_str = latitude_dms.degrees.to_string();
+        }
+        if latitude_dms.minutes < 10 {
+            latitude_min_str = format!("0{}", latitude_dms.minutes.to_string());
+        } else {
+            latitude_min_str = latitude_dms.minutes.to_string();
+        }
+
         println!(
             "{}{}N{}{}E",
-            latitude_dms.degrees,
-            latitude_dms.minutes,
-            longitude_dms.degrees,
-            longitude_dms.minutes
+            latitude_deg_str,
+            latitude_min_str,
+            longitude_deg_str,
+            longitude_min_str
         );
     }
 }
