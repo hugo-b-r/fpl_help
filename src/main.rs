@@ -1,11 +1,18 @@
 use std::{env, process};
-use geocoding::{Coordinate, Forward, Opencage, Point};
+use geocoding::{Forward, Opencage, Point};
+use geo_types::Coord;
+use std::fs::File;
+use std::io::{self, prelude::*, BufReader};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
 
     let config = Config::new(&args).unwrap_or_else(|err| {
         eprintln!("Problem found when getting arguments: {}", err);
+        process::exit(1);
+    });
+    let file = FPL::new(config).unwrap_or_else(|err| {
+        eprintln!("Problem found when loadign file: {}", err);
         process::exit(1);
     });
 }
@@ -28,6 +35,29 @@ impl Config {
     }
 }
 
-struct File {
+struct FPL {
+    file_name: String,
     addresses: Vec<String>,
+}
+
+impl FPL {
+    fn new(config: Config) -> Result<FPL, &'static str> {
+        let file_name = config.file_name.clone();
+
+        let file = File::open(&file_name).unwrap_or_else(|err| {
+            eprintln!("File not found");
+            process::exit(1);
+        });
+        let file_reader = BufReader::new(file);
+
+        let mut addresses = Vec::new();
+
+        for line in file_reader.lines() {
+            addresses.push(line.unwrap().to_string());
+        }
+        Ok(FPL {
+            file_name,
+            addresses,
+        })
+    }
 }

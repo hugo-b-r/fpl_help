@@ -212,6 +212,7 @@ dependencies = [
 name = "fpl_help"
 version = "0.1.0"
 dependencies = [
+ "geo-types",
  "geocoding",
 ]
 
