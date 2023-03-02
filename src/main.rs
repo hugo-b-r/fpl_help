@@ -2,6 +2,7 @@ use std::{env, process};
 use geocoding::{Openstreetmap, Forward, Point};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
+use dms_coordinates::DMS;
 
 fn main() {
     let osm = Openstreetmap::new();
@@ -18,8 +19,20 @@ fn main() {
 
     for address in file.addresses {
         let res: Vec<Point<f64>> = osm.forward(&address).unwrap();
-        let longitude = res[0].x();
-        let latitude = res[0].y();
+        
+        let longitude_decimal = res[0].x();
+        let latitude_decimal = res[0].y();
+        
+        let longitude_dms = DMS::from_decimal_degrees(longitude_decimal, false);
+        let latitude_dms = DMS::from_decimal_degrees(latitude_decimal, false);
+
+        println!(
+            "{}{}N{}{}E",
+            latitude_dms.degrees,
+            latitude_dms.minutes,
+            longitude_dms.degrees,
+            longitude_dms.minutes
+        );
     }
 }
 
