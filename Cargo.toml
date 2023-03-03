@@ -7,5 +7,6 @@ edition = "2021"
 
 [dependencies]
 dms-coordinates = "1.1.0"
+eframe = "0.21.3"
 geo-types = "0.7.8"
 geocoding = "0.4.0"
