@@ -59,13 +59,24 @@ pub fn get_addresses(file: FPL) -> Result<String, String> {
         let latitude_decimal = res[0].y();
         
         let longitude_dms = DMS::from_decimal_degrees(longitude_decimal, false);
-        let latitude_dms = DMS::from_decimal_degrees(latitude_decimal, false);
+        let latitude_dms = DMS::from_decimal_degrees(latitude_decimal, true);
 
 
         let latitude_deg_str: String;
         let latitude_min_str: String;
         let longitude_deg_str: String;
         let longitude_min_str: String;
+
+        let mut longitude_direction: String = "E".to_string();
+        let mut latitude_direction: String = "N".to_string();
+
+        if longitude_dms.bearing.is_western() {
+            longitude_direction = "W".to_string();
+        }
+        if latitude_dms.bearing.is_southern() {
+            latitude_direction = "S".to_string();
+        }
+        
 
         if longitude_dms.degrees < 10 {
             longitude_deg_str = format!("00{}", longitude_dms.degrees.to_string());
@@ -90,11 +101,13 @@ pub fn get_addresses(file: FPL) -> Result<String, String> {
             latitude_min_str = latitude_dms.minutes.to_string();
         }
         output.push_str(format!(
-                "{}{}N{}{}E\n",
+                "{}{}{}{}{}{}\n",
                 latitude_deg_str,
                 latitude_min_str,
+                latitude_direction,
                 longitude_deg_str,
-                longitude_min_str
+                longitude_min_str,
+                longitude_direction
             ).as_str());
     }
     Ok( output )
