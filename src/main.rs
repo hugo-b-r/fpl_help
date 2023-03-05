@@ -53,7 +53,7 @@ impl eframe::App for FPLHelp {
                 if ui.button("Convert").clicked() {
                     *coordinates = get_coordinates(address.clone()).unwrap_or_else(|err| {
                         eprintln!("Error when geocoding: {}", err);
-                        "".to_string()
+                        "Not a valid address".to_string()
                     });
                 };
                 ui.label(coordinates.as_str());
