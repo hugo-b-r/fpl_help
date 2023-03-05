@@ -47,7 +47,7 @@ impl FPL {
     }
 }
 
-fn get_coordinate(address: String) -> Result<String, String> {
+fn get_coordinates(address: String) -> Result<String, String> {
     
     let osm = Openstreetmap::new();
 
@@ -110,7 +110,7 @@ fn get_coordinate(address: String) -> Result<String, String> {
     ))
 }
 
-pub fn get_coordinates(file: FPL) -> Result<String, String> {
+pub fn get_coordinates_list(file: FPL) -> Result<String, String> {
     let mut output: String = "".to_string();
     for address in file.addresses {
         output.push_str(get_coordinate(address).unwrap().as_str());
