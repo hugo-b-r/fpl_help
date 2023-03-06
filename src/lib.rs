@@ -3,7 +3,6 @@ use geocoding::{Openstreetmap, Forward, Point};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 use dms_coordinates::DMS;
-use std::{thread, time};
 
 pub struct Config {
     file_name: String,
