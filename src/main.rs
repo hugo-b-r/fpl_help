@@ -2,6 +2,7 @@ use std::{env, process};
 use fpl_help::{Config, FPL, get_list_coordinates_list, get_coordinates, convert_coordinates, url_from};
 use eframe::egui;
 use geocoding::Point;
+use arboard::Clipboard;
 
 
 fn main() {
@@ -28,6 +29,7 @@ fn main() {
 }
 
 struct FPLHelp {
+    clipboard: Clipboard,
     address: String,
     location_url: String,
     coordinates: Vec<Point<f64>>,
@@ -36,6 +38,7 @@ struct FPLHelp {
 impl Default for FPLHelp {
     fn default() -> FPLHelp {
         FPLHelp {
+            clipboard: Clipboard::new().unwrap(),
             address: String::default(),
             location_url: String::default(),
             coordinates: Vec::new(),
@@ -60,6 +63,7 @@ impl eframe::App for FPLHelp {
         frame: &mut eframe::Frame,
     ) {
         let Self {
+            clipboard,
             address,
             location_url,
             coordinates 
@@ -83,6 +87,7 @@ impl eframe::App for FPLHelp {
                 ui.horizontal(|ui| {
                     ui.label(convert_coordinates(*point).unwrap());
                     if ui.button("Copy").clicked() {
+                        let _ = &clipboard.set_text(convert_coordinates(*point).unwrap());
                         println!("copy {} to clipboard", convert_coordinates(*point).unwrap());
                     }
                     ui.hyperlink_to("Verify coordinates", url_from(*point));
