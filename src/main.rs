@@ -1,5 +1,5 @@
 use std::{env, process};
-use fpl_help::{Config, FPL, get_list_coordinates_list, get_coordinates, convert_coordinates};
+use fpl_help::{Config, FPL, get_list_coordinates_list, get_coordinates, convert_coordinates, url_from};
 use eframe::egui;
 use geocoding::Point;
 
@@ -18,7 +18,10 @@ fn main() {
 
     println!( "{}", get_list_coordinates_list(file).unwrap() );
 
-    let native_options = eframe::NativeOptions::default();
+    let native_options = eframe::NativeOptions {
+        initial_window_size: Some(egui::vec2(400.0, 700.0)),
+        ..Default::default()
+    };
     eframe::run_native("FPL Help", native_options, Box::new(|cc| Box::new(FPLHelp::new(cc))));
 
 }
@@ -71,6 +74,7 @@ impl eframe::App for FPLHelp {
                         Vec::new()
                     });
                 };
+                egui::widgets::global_dark_light_mode_buttons(ui);
             });
             for point in coordinates.iter() {
                 ui.horizontal(|ui| {
@@ -78,7 +82,7 @@ impl eframe::App for FPLHelp {
                     if ui.button("Copy").clicked() {
                         println!("copy {} to clipboard", convert_coordinates(*point).unwrap());
                     }
-                    ui.hyperlink_to("Verify coordinates", &location_url);
+                    ui.hyperlink_to("Verify coordinates", url_from(*point));
                 });
             }
            // some sort of for address in coordinatespatattit a line with the coorinates, a copy button and the real address

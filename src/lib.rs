@@ -141,3 +141,11 @@ pub fn get_list_coordinates_list(file: FPL) -> Result<String, String> {
 
     Ok( output )
 }
+
+pub fn url_from(coordinates: Point<f64>) -> String {
+    let x = coordinates.x();
+    let y = coordinates.y();
+
+    let link: String = format!("https://www.openstreetmap.org/#map=10/{}/{}", x, y).to_string();
+    link
+}
