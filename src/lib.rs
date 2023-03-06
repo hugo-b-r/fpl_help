@@ -146,6 +146,6 @@ pub fn url_from(coordinates: Point<f64>) -> String {
     let x = coordinates.x();
     let y = coordinates.y();
 
-    let link: String = format!("https://www.openstreetmap.org/#map=10/{}/{}", x, y).to_string();
+    let link: String = format!("https://www.openstreetmap.org/#map=5/{}/{}", y, x).to_string();
     link
 }
