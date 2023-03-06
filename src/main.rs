@@ -32,6 +32,7 @@ struct FPLHelp {
     clipboard: Clipboard,
     address: String,
     coordinates: Vec<Point<f64>>,
+    error: String,
 }
 
 impl Default for FPLHelp {
@@ -40,6 +41,7 @@ impl Default for FPLHelp {
             clipboard: Clipboard::new().unwrap(),
             address: String::default(),
             coordinates: Vec::new(),
+            error: String::default(),
         }
     }
 }
@@ -63,7 +65,8 @@ impl eframe::App for FPLHelp {
         let Self {
             clipboard,
             address,
-            coordinates 
+            coordinates,
+            error
         } = self;
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Add an address");
@@ -72,7 +75,7 @@ impl eframe::App for FPLHelp {
                 if ui.button("Convert").clicked() {
                     *coordinates = get_coordinates(address.clone()).unwrap_or_else(|err| {
                         eprintln!("Error when geocoding: {}", err);
-                        ui.label(format!("error when geocoding: {}", err));
+                        *error = format!("error when geocoding: {}", err);
                         Vec::new()
                     });
                 };
@@ -80,6 +83,7 @@ impl eframe::App for FPLHelp {
                     egui::widgets::global_dark_light_mode_buttons(ui);
                 });
             });
+            ui.label(error.as_str());
             for point in coordinates.iter() {
                 ui.horizontal(|ui| {
                     ui.label(convert_coordinates(*point).unwrap());
@@ -90,7 +94,6 @@ impl eframe::App for FPLHelp {
                     ui.hyperlink_to("Verify coordinates", url_from(*point));
                 });
             }
-           // some sort of for address in coordinatespatattit a line with the coorinates, a copy button and the real address
-       });
-   }
+        });
+    }
 }

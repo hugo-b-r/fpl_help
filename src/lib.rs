@@ -55,7 +55,7 @@ pub fn get_coordinates(address: String) -> Result<Vec<Point<f64>>, String> {
         
         Ok( output )
     } else {
-        Err("Not an address.".to_string())
+        Err("Not a valid address.".to_string())
     }
 }
 
