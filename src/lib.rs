@@ -60,7 +60,7 @@ pub fn get_coordinates(address: String) -> Result<Vec<Point<f64>>, String> {
     }
 }
 
-fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
+pub fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
     let longitude_decimal = coordinates.x();
     let latitude_decimal = coordinates.y();
     

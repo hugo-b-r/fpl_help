@@ -1,6 +1,7 @@
 use std::{env, process};
-use fpl_help::{Config, FPL, get_coordinates_list, get_coordinates};
+use fpl_help::{Config, FPL, get_list_coordinates_list, get_coordinates, convert_coordinates};
 use eframe::egui;
+use geocoding::Point;
 
 
 fn main() {
@@ -15,18 +16,27 @@ fn main() {
         process::exit(1);
     });
 
-    println!( "{}", get_coordinates_list(file).unwrap() );
+    println!( "{}", get_list_coordinates_list(file).unwrap() );
 
     let native_options = eframe::NativeOptions::default();
     eframe::run_native("FPL Help", native_options, Box::new(|cc| Box::new(FPLHelp::new(cc))));
 
 }
 
-#[derive(Default)]
 struct FPLHelp {
     address: String,
     location_url: String,
-    coordinates: String,
+    coordinates: Vec<Point<f64>>,
+}
+
+impl Default for FPLHelp {
+    fn default() -> FPLHelp {
+        FPLHelp {
+            address: String::default(),
+            location_url: String::default(),
+            coordinates: Vec::new(),
+        }
+    }
 }
 
 impl FPLHelp {
@@ -45,7 +55,11 @@ impl eframe::App for FPLHelp {
         ctx: &egui::Context,
         frame: &mut eframe::Frame,
     ) {
-        let Self { address, location_url, coordinates } = self;
+        let Self {
+            address,
+            location_url,
+            coordinates 
+        } = self;
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Add an address");
             egui::menu::bar(ui, |ui| {
@@ -53,12 +67,21 @@ impl eframe::App for FPLHelp {
                 if ui.button("Convert").clicked() {
                     *coordinates = get_coordinates(address.clone()).unwrap_or_else(|err| {
                         eprintln!("Error when geocoding: {}", err);
-                        "Not a valid address".to_string()
+                        ui.label(format!("error when geocoding: {}", err));
+                        Vec::new()
                     });
                 };
-                ui.label(coordinates.as_str());
+                for point in coordinates.iter() {
+                    ui.horizontal(|ui| {
+                        ui.label(convert_coordinates(*point).unwrap());
+                        if ui.button("Copy").clicked() {
+                            println!("copy {} to clipboard", convert_coordinates(*point).unwrap());
+                        }
+                        ui.hyperlink_to("Verify coordinates", &location_url);
+                    });
+                }
            });
-           ui.hyperlink_to("Verify", location_url.as_str());
+           // some sort of for address in coordinatespatattit a line with the coorinates, a copy button and the real address
        });
    }
 }
