@@ -74,7 +74,9 @@ impl eframe::App for FPLHelp {
                         Vec::new()
                     });
                 };
-                egui::widgets::global_dark_light_mode_buttons(ui);
+                ui.with_layout(egui::Layout::top_down(egui::Align::RIGHT), |ui| {
+                    egui::widgets::global_dark_light_mode_buttons(ui);
+                });
             });
             for point in coordinates.iter() {
                 ui.horizontal(|ui| {
