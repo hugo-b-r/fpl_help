@@ -71,16 +71,16 @@ impl eframe::App for FPLHelp {
                         Vec::new()
                     });
                 };
-                for point in coordinates.iter() {
-                    ui.horizontal(|ui| {
-                        ui.label(convert_coordinates(*point).unwrap());
-                        if ui.button("Copy").clicked() {
-                            println!("copy {} to clipboard", convert_coordinates(*point).unwrap());
-                        }
-                        ui.hyperlink_to("Verify coordinates", &location_url);
-                    });
-                }
-           });
+            });
+            for point in coordinates.iter() {
+                ui.horizontal(|ui| {
+                    ui.label(convert_coordinates(*point).unwrap());
+                    if ui.button("Copy").clicked() {
+                        println!("copy {} to clipboard", convert_coordinates(*point).unwrap());
+                    }
+                    ui.hyperlink_to("Verify coordinates", &location_url);
+                });
+            }
            // some sort of for address in coordinatespatattit a line with the coorinates, a copy button and the real address
        });
    }
