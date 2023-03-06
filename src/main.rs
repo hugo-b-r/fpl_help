@@ -20,6 +20,7 @@ fn main() {
 
     let native_options = eframe::NativeOptions {
         initial_window_size: Some(egui::vec2(500.0, 700.0)),
+        min_window_size: 480.0,
         ..Default::default()
     };
     eframe::run_native("FPL Help", native_options, Box::new(|cc| Box::new(FPLHelp::new(cc))));
