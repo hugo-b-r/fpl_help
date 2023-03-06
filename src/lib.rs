@@ -106,7 +106,7 @@ fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
         latitude_min_str = latitude_dms.minutes.to_string();
     }
     let output: String = format!(
-        "{}{}{}{}{}{}\n",
+        "{}{}{}{}{}{}",
         latitude_deg_str,
         latitude_min_str,
         latitude_direction,
@@ -118,17 +118,25 @@ fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
     Ok( output)
 }
 
-pub fn get_coordinates_list(file: FPL) -> Result<String, String> {
+pub fn get_list_coordinates_list(file: FPL) -> Result<String, String> {
     let mut output: String = "".to_string();
-    let mut coordinates: String;
+    let mut coordinates_list: Vec<Point<f64>>;
     for address in file.addresses {
 
-        coordinates = get_coordinates(address).unwrap_or_else(|err| {
+        coordinates_list = get_coordinates(address).unwrap_or_else(|err| {
             eprintln!("Error when geocoding: {}", err);
-            "".to_string()
+            Vec::new()
         });
-        output.push_str(coordinates.as_str());
-        thread::sleep(time::Duration::from_secs(1));
+
+        for point in coordinates_list {
+            output.push_str(convert_coordinates(point).unwrap().as_str());
+            output.push_str(", ");
+        }
+        let mut output_chars = output.chars();
+        output_chars.next();
+        output_chars.next_back();
+        output = output_chars.as_str().to_string();
+        output.push_str("\n");
     }
 
     Ok( output )
