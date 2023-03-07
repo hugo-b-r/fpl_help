@@ -2,7 +2,7 @@ use std::process;
 use geocoding::{Openstreetmap, Forward, Point};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
-//use dms_coordinates::DMS;
+
 
 pub struct Config {
     file_name: String,
@@ -143,7 +143,7 @@ fn dms_from_decimal(decimal: f64, bearing: Orientation) -> DegreesMinutesSeconds
     let degrees = decimal.abs().trunc() as i32;
     let minutes = ((decimal.abs() - degrees as f64) * 60.0).trunc() as i32;
     let seconds = ((((decimal.abs() - degrees as f64) * 60.0) - minutes as f64) * 60.0).trunc() as f64;
-    if decimal < 0 {
+    if decimal < 0.0 {
         bearing = bearing.opposite();
     }
     DegreesMinutesSeconds {
