@@ -2,7 +2,7 @@ use std::process;
 use geocoding::{Openstreetmap, Forward, Point};
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
-use dms_coordinates::DMS;
+//use dms_coordinates::DMS;
 
 pub struct Config {
     file_name: String,
@@ -57,6 +57,12 @@ pub fn get_coordinates(address: String) -> Result<Vec<Point<f64>>, String> {
     } else {
         Err("Not a valid address.".to_string())
     }
+}
+
+struct DegreesMinutesSeconds {
+    deggrees: i32,
+    minutes: i32,
+    seconds: f64,
 }
 
 pub fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
