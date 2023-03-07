@@ -62,7 +62,7 @@ pub fn get_coordinates(address: String) -> Result<Vec<Point<f64>>, String> {
 struct DegreesMinutesSeconds {
     degrees: i32,
     minutes: i32,
-    seconds: f64,
+    _seconds: f64,
     bearing: Orientation,
 }
 
@@ -75,7 +75,7 @@ enum Orientation {
 }
 
 impl DegreesMinutesSeconds {
-    fn is_latitude(self: Self) -> bool {
+    fn _is_latitude(self: Self) -> bool {
         if self.bearing == Orientation::North || self.bearing == Orientation::South {
             true
         } else {
@@ -83,7 +83,7 @@ impl DegreesMinutesSeconds {
         }
     }
 
-    fn is_longitude(self: Self) -> bool {
+    fn _is_longitude(self: Self) -> bool {
         if self.bearing == Orientation::East || self.bearing == Orientation::West {
             true
         } else {
@@ -102,7 +102,7 @@ impl Orientation {
         }        
     }
 
-    fn is_northern(self: Self) -> bool {
+    fn _is_northern(self: Self) -> bool {
         if self == Orientation::North {
             true
         } else {
@@ -111,7 +111,7 @@ impl Orientation {
     }
 
     
-    fn is_eastern(self: Self) -> bool {
+    fn _is_eastern(self: Self) -> bool {
         if self == Orientation::East {
             true
         } else {
@@ -142,14 +142,14 @@ impl Orientation {
 fn dms_from_decimal(decimal: f64, mut bearing: Orientation) -> DegreesMinutesSeconds {
     let degrees = decimal.abs().trunc() as i32;
     let minutes = ((decimal.abs() - degrees as f64) * 60.0).trunc() as i32;
-    let seconds = ((((decimal.abs() - degrees as f64) * 60.0) - minutes as f64) * 60.0).trunc() as f64;
+    let _seconds = ((((decimal.abs() - degrees as f64) * 60.0) - minutes as f64) * 60.0).trunc() as f64;
     if decimal < 0.0 {
         bearing = bearing.opposite();
     }
     DegreesMinutesSeconds {
         degrees,
         minutes,
-        seconds,
+        _seconds,
         bearing,
     }
 }
