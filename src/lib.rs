@@ -91,6 +91,17 @@ impl DegreesMinutesSeconds {
     }
 }
 
+impl Orientation {
+    fn opposite(self: Self) -> Self {
+        match self {
+            Orientation::North => Orientation::South,
+            Orientation::East => Orientation::West,
+            Orientation::South => Orientation::North,
+            Orientation::West => Orientation::East,
+        }        
+    }
+}
+
 
 fn dms_from_decimal(decimal: f64, bearing: Orientation) -> DegreesMinutesSeconds {
     let degrees = decimal.abs().trunc() as i32;
