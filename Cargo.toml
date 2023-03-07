@@ -8,7 +8,6 @@ author = ["Hugo Berthet-Rambaud <hugoberthetrambaud@outlook.com>"]
 
 [dependencies]
 arboard = "3.2.0"
-dms-coordinates = "1.1.0"
 eframe = "0.21.3"
 geo-types = "0.7.8"
 geocoding = "0.4.0"

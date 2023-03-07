@@ -23,7 +23,6 @@ fn main() -> eframe::Result<()> {
 }
 
 #[cfg(traget_arch = "wasm32")]
-
 fn main() {
     console_error_panic_hook::set_once();
 
