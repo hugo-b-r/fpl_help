@@ -139,7 +139,7 @@ impl Orientation {
 }
 
 
-fn dms_from_decimal(decimal: f64, bearing: Orientation) -> DegreesMinutesSeconds {
+fn dms_from_decimal(decimal: f64, mut bearing: Orientation) -> DegreesMinutesSeconds {
     let degrees = decimal.abs().trunc() as i32;
     let minutes = ((decimal.abs() - degrees as f64) * 60.0).trunc() as i32;
     let seconds = ((((decimal.abs() - degrees as f64) * 60.0) - minutes as f64) * 60.0).trunc() as f64;
