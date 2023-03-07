@@ -60,7 +60,7 @@ pub fn get_coordinates(address: String) -> Result<Vec<Point<f64>>, String> {
 }
 
 struct DegreesMinutesSeconds {
-    deggrees: i32,
+    degrees: i32,
     minutes: i32,
     seconds: f64,
     bearing: Orientation,
@@ -106,7 +106,7 @@ impl Orientation {
 fn dms_from_decimal(decimal: f64, bearing: Orientation) -> DegreesMinutesSeconds {
     let degrees = decimal.abs().trunc() as i32;
     let minutes = ((decimal.abs() - degrees as f64) * 60.0).trunc() as i32;
-    let seconds = ((((decimal.abs() - degrees as f64) * 60.0) - minutes as f64) * 60.0).trunc() as i32;
+    let seconds = ((((decimal.abs() - degrees as f64) * 60.0) - minutes as f64) * 60.0).trunc() as f64;
     DegreesMinutesSeconds {
         degrees,
         minutes,
