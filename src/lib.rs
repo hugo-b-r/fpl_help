@@ -91,12 +91,25 @@ impl DegreesMinutesSeconds {
     }
 }
 
+
+fn dms_from_decimal(decimal: f64, bearing: Orientation) -> DegreesMinutesSeconds {
+    let degrees = decimal.abs().trunc() as i32;
+    let minutes = ((decimal.abs() - degrees as f64) * 60.0).trunc() as i32;
+    let seconds = ((((decimal.abs() - degrees as f64) * 60.0) - minutes as f64) * 60.0).trunc() as i32;
+    DegreesMinutesSeconds {
+        degrees,
+        minutes,
+        seconds,
+        bearing,
+    }
+}
+
 pub fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
     let longitude_decimal = coordinates.x();
     let latitude_decimal = coordinates.y();
     
-    let longitude_dms = DMS::from_decimal_degrees(longitude_decimal, false);
-    let latitude_dms = DMS::from_decimal_degrees(latitude_decimal, true);
+    let longitude_dms = dms_from_decimal(longitude_decimal, Orientation::West);
+    let latitude_dms = dms_from_decimal(latitude_decimal, Orientation::North);
 
     let latitude_deg_str: String;
     let latitude_min_str: String;
