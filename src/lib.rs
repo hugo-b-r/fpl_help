@@ -101,6 +101,41 @@ impl Orientation {
             Orientation::West => Orientation::East,
         }        
     }
+
+    fn is_northern(self: Self) -> bool {
+        if self == Orientation::North {
+            true
+        } else {
+            false
+        }
+    }
+
+    
+    fn is_eastern(self: Self) -> bool {
+        if self == Orientation::East {
+            true
+        } else {
+            false
+        }
+    }
+
+    
+    fn is_southern(self: Self) -> bool {
+        if self == Orientation::South {
+            true
+        } else {
+            false
+        }
+    }
+
+    
+    fn is_western(self: Self) -> bool {
+        if self == Orientation::West {
+            true
+        } else {
+            false
+        }
+    }
 }
 
 
