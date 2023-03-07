@@ -2,6 +2,7 @@
 name = "fpl_help"
 version = "0.2.1"
 edition = "2021"
+author = ["Hugo Berthet-Rambaud <hugoberthetrambaud@outlook.com>"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -11,3 +12,22 @@ dms-coordinates = "1.1.0"
 eframe = "0.21.3"
 geo-types = "0.7.8"
 geocoding = "0.4.0"
+
+[dependencies.chrono]
+version = "0.4.23"
+default-features = false
+features = ["wasmbind", "js-sys"]
+
+#native
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+
+
+#web
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = "0.1.6"
+tracing-wasm = "0.2"
+wasm-bindgen-futures = "0.4"
+
+[profile.release]
+opt-level = 2
+

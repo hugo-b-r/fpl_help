@@ -1,31 +1,47 @@
-use std::{env, process};
-use fpl_help::{Config, FPL, get_list_coordinates_list, get_coordinates, convert_coordinates, url_from};
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+use fpl_help::{get_coordinates, convert_coordinates, url_from};
 use eframe::egui;
 use geocoding::Point;
 use arboard::Clipboard;
 
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
-
-    let config = Config::new(&args).unwrap_or_else(|err| {
-        eprintln!("Problem found when getting arguments: {}", err);
-        process::exit(1);
-    });
-    let file = FPL::new(config).unwrap_or_else(|err| {
-        eprintln!("Problem found when loading file: {}", err);
-        process::exit(1);
-    });
-
-    println!( "{}", get_list_coordinates_list(file).unwrap() );
-
+#[cfg(not(traget_arch = "wasm32"))]
+fn main() -> eframe::Result<()> {
     let native_options = eframe::NativeOptions {
         initial_window_size: Some(egui::vec2(500.0, 700.0)),
         min_window_size: Some(egui::vec2(480.0, 300.0)),
         ..Default::default()
     };
-    let _ = eframe::run_native("FPL Help", native_options, Box::new(|cc| Box::new(FPLHelp::new(cc))));
+    eframe::run_native(
+        "FPL Help",
+        native_options,
+        Box::new(
+            |cc| Box::new(FPLHelp::new(cc))
+        )
+    )
+}
 
+#[cfg(traget_arch = "wasm32")]
+
+fn main() {
+    console_error_panic_hook::set_once();
+
+    // Redirect tracing to console.log and friends:
+    tracing_wasm::set_as_global_default();
+
+    let web_options = eframe::WebOptions::default();
+
+
+    wasm_bindgen_futures::spawn_local(async {
+        eframe::start_web(
+            "the_canvas_id", // hardcode it
+            web_options,
+            Box::new(|cc| Box::new(FPLHelp::new(cc))),
+        )
+        .await
+        .expect("failed to start eframe");
+    });
 }
 
 struct FPLHelp {
