@@ -7,10 +7,9 @@ author = ["Hugo Berthet-Rambaud <hugoberthetrambaud@outlook.com>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-arboard = "3.2.0"
 eframe = "0.21.3"
 geo-types = "0.7.8"
-geocoding = "0.4.0"
+geocoding = { git = 'https://github.com/hugo-b-r/geocoding' }
 
 [dependencies.chrono]
 version = "0.4.23"
@@ -20,6 +19,7 @@ features = ["wasmbind", "js-sys"]
 #native
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 
+arboard = "3.2.0"
 
 #web
 [target.'cfg(target_arch = "wasm32")'.dependencies]
