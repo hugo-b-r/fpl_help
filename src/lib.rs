@@ -66,6 +66,7 @@ struct DegreesMinutesSeconds {
     bearing: Orientation,
 }
 
+#[derive(PartialEq)]
 enum Orientation {
     North,
     East,
