@@ -73,6 +73,24 @@ enum Orientation {
     West,
 }
 
+impl DegreesMinutesSeconds {
+    fn is_latitude(self: Self) -> bool {
+        if self.bearing == Orientation::North || self.bearing == Orientation::South {
+            true
+        } else {
+            false
+        }
+    }
+
+    fn is_longitude(self: Self) -> bool {
+        if self.bearing == Orientation::East || self.bearing == Orientation::West {
+            true
+        } else {
+            false
+        }
+    }
+}
+
 pub fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
     let longitude_decimal = coordinates.x();
     let latitude_decimal = coordinates.y();
