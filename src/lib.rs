@@ -63,6 +63,14 @@ struct DegreesMinutesSeconds {
     deggrees: i32,
     minutes: i32,
     seconds: f64,
+    bearing: Orientation,
+}
+
+enum Orientation {
+    North,
+    East,
+    South,
+    West,
 }
 
 pub fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
