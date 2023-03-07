@@ -2,7 +2,7 @@
 name = "fpl_help"
 version = "0.3.0"
 edition = "2021"
-author = ["Hugo Berthet-Rambaud <hugoberthetrambaud@outlook.com>"]
+authors = ["Hugo Berthet-Rambaud <hugoberthetrambaud@outlook.com>"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
