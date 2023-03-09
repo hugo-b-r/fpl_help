@@ -68,6 +68,10 @@ impl eframe::App for FPLHelp {
                 ui.horizontal(|ui| {
                     ui.label((*coordinates).clone());
 
+                    if ui.button("Remove").clicked() {
+                        let index = flight_plan_coordinates.iter().position(|x| *x == coordinates).unwrap();
+                        flight_plan_coordinates.remove(index);
+                    }
                     if ui.button("Copy coordinates").clicked() {
                         let _ = &clipboard.set_text((*coordinates)[0..11].to_string().clone());
                     }
