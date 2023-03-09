@@ -64,25 +64,7 @@ impl eframe::App for FPLHelp {
             flight_plan_coordinates
         } = self;
         egui::CentralPanel::default().show(ctx, |ui| {
-            for coordinates in flight_plan_coordinates.clone().iter_mut() {
-                ui.horizontal(|ui| {
-                    ui.label((*coordinates).clone());
-
-                    ui.with_layout(egui::Layout::right_to_left(egui::Align::RIGHT), |ui| {
-                        if ui.button("Remove").clicked() {
-                            let index = flight_plan_coordinates.iter().position(|x| *x == *coordinates).unwrap();
-                            flight_plan_coordinates.remove(index);
-                        }
-                        if ui.button("Copy coordinates").clicked() {
-                            let _ = &clipboard.set_text((*coordinates)[0..11].to_string().clone());
-                        }
-                        if ui.button("Copy all").clicked() {
-                            let _ = &clipboard.set_text((*coordinates).to_string().clone());
-                        }
-                    });
-                });
-                    
-            }
+            
             egui::menu::bar(ui, |ui| {
                 ui.text_edit_singleline(address);
                 if ui.button("Convert").clicked() {
@@ -114,6 +96,35 @@ impl eframe::App for FPLHelp {
                     });
                 });
             }
+            for coordinates in flight_plan_coordinates.clone().iter_mut() {
+                ui.horizontal(|ui| {
+                    ui.label((*coordinates).clone());
+
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::RIGHT), |ui| {
+                        if ui.button("Remove").clicked() {
+                            let index = flight_plan_coordinates.clone().iter().position(|x| *x == *coordinates).unwrap();
+                            flight_plan_coordinates.remove(index);
+                        }
+                        if ui.button("Copy coordinates").clicked() {
+                            let _ = &clipboard.set_text((*coordinates)[0..11].to_string().clone());
+                        }
+                        if ui.button("Copy all").clicked() {
+                            let _ = &clipboard.set_text((*coordinates).to_string().clone());
+                        }
+                    });
+                });
+                    
+            }
+            let mut text: String = Default::default();
+            for address in flight_plan_coordinates.clone().iter_mut() {
+                text.push_str(format!("{} ", address[O..11].to_string()).as_str());
+            }
+            ui.horizontal(|ui| {
+                ui.label(text.clone());
+                if ui.button("Copy Complete text").clicked() {
+                    let _ = &clipboard.set_text(text);
+                }
+            });
         });
     }
 }
