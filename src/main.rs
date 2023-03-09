@@ -117,12 +117,15 @@ impl eframe::App for FPLHelp {
             }
             let mut text: String = Default::default();
             for address in flight_plan_coordinates.clone().iter_mut() {
-                text.push_str(format!("{} ", address[O..11].to_string()).as_str());
+                text.push_str(format!("{} ", address[0..11].to_string()).as_str());
             }
             ui.horizontal(|ui| {
-                ui.label(text.clone());
-                if ui.button("Copy Complete text").clicked() {
-                    let _ = &clipboard.set_text(text);
+                
+                if text != "".to_string() {
+                    ui.label(text.clone());
+                    if ui.button("Copy Complete text").clicked() {
+                        let _ = &clipboard.set_text(text);
+                    }
                 }
             });
         });
