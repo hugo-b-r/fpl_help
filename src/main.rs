@@ -103,6 +103,11 @@ impl eframe::App for FPLHelp {
                         let _ = &clipboard.set_text(convert_coordinates(*point).unwrap());
                         println!("copy {} to clipboard", convert_coordinates(*point).unwrap());
                     }
+                    if ui.button("Add").clicked() {
+                        flight_plan_coordinates.push(format!("{} {}", convert_coordinates(*point).unwrap(), address));
+                        println!("Add {} to list of destinations", format!("{} {}", convert_coordinates(*point).unwrap(), address));
+                    }
+
                     ui.hyperlink_to("Verify coordinates", url_from(*point));
                 });
             }
