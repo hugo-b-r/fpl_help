@@ -25,6 +25,7 @@ struct FPLHelp {
     address: String,
     coordinates: Vec<Point<f64>>,
     error: String,
+    flight_plan_coordinates: Vec<Point<f64>>,
 }
 
 impl Default for FPLHelp {
@@ -34,6 +35,7 @@ impl Default for FPLHelp {
             address: String::default(),
             coordinates: Vec::new(),
             error: String::default(),
+            flight_plan_coordinates: Vec::default(),
         }
     }
 }
@@ -58,7 +60,8 @@ impl eframe::App for FPLHelp {
             clipboard,
             address,
             coordinates,
-            error
+            error,
+            flight_plan_coordinates
         } = self;
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Add an address");
