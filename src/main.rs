@@ -25,8 +25,8 @@ struct FPLHelp {
     address: String,
     coordinates: Vec<Point<f64>>,
     error: String,
-    flight_plan_coordinates: Vec<Point<f64>>,
-}
+    flight_plan_coordinates: Vec<String>, 
+} //on stocke les différentes destinations sous la forme: 
 
 impl Default for FPLHelp {
     fn default() -> FPLHelp {
@@ -64,6 +64,19 @@ impl eframe::App for FPLHelp {
             flight_plan_coordinates
         } = self;
         egui::CentralPanel::default().show(ctx, |ui| {
+            for coordinates in flight_plan_coordinates {
+                ui.horizontal(|ui| {
+                    ui.label((*coordinates).clone());
+
+                    if ui.button("Copy coordinates").clicked() {
+                        let _ = &clipboard.set_text((*coordinates)[0..11].to_string().clone());
+                    }
+                    if ui.button("Copy all").clicked() {
+                        let _ = &clipboard.set_text((*coordinates).to_string().clone());
+                    }
+                });
+                    
+            }
             ui.heading("Add an address");
             egui::menu::bar(ui, |ui| {
                 ui.text_edit_singleline(address);
