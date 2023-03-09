@@ -123,7 +123,7 @@ impl eframe::App for FPLHelp {
                 
                 if text != "".to_string() {
                     ui.label(text.clone());
-                    if ui.button("Copy Complete text").clicked() {
+                    if ui.button("Copy complete trip").clicked() {
                         let _ = &clipboard.set_text(text);
                     }
                 }
