@@ -68,16 +68,18 @@ impl eframe::App for FPLHelp {
                 ui.horizontal(|ui| {
                     ui.label((*coordinates).clone());
 
-                    if ui.button("Remove").clicked() {
-                        let index = flight_plan_coordinates.iter().position(|x| *x == *coordinates).unwrap();
-                        flight_plan_coordinates.remove(index);
-                    }
-                    if ui.button("Copy coordinates").clicked() {
-                        let _ = &clipboard.set_text((*coordinates)[0..11].to_string().clone());
-                    }
-                    if ui.button("Copy all").clicked() {
-                        let _ = &clipboard.set_text((*coordinates).to_string().clone());
-                    }
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::RIGHT), |ui| {
+                        if ui.button("Remove").clicked() {
+                            let index = flight_plan_coordinates.iter().position(|x| *x == *coordinates).unwrap();
+                            flight_plan_coordinates.remove(index);
+                        }
+                        if ui.button("Copy coordinates").clicked() {
+                            let _ = &clipboard.set_text((*coordinates)[0..11].to_string().clone());
+                        }
+                        if ui.button("Copy all").clicked() {
+                            let _ = &clipboard.set_text((*coordinates).to_string().clone());
+                        }
+                    });
                 });
                     
             }
@@ -98,17 +100,18 @@ impl eframe::App for FPLHelp {
             for point in coordinates.iter() {
                 ui.horizontal(|ui| {
                     ui.label(convert_coordinates(*point).unwrap());
-                    #[cfg(not(traget_arch = "wasm32"))] //not copying or pasting on web
-                    if ui.button("Copy").clicked() {
-                        let _ = &clipboard.set_text(convert_coordinates(*point).unwrap());
-                        println!("copy {} to clipboard", convert_coordinates(*point).unwrap());
-                    }
-                    if ui.button("Add").clicked() {
-                        flight_plan_coordinates.push(format!("{} {}", convert_coordinates(*point).unwrap(), address));
-                        println!("Add {} to list of destinations", format!("{} {}", convert_coordinates(*point).unwrap(), address));
-                    }
-
-                    ui.hyperlink_to("Verify coordinates", url_from(*point));
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::RIGHT), |ui| {
+                        #[cfg(not(traget_arch = "wasm32"))] //not copying or pasting on web
+                        if ui.button("Copy").clicked() {
+                            let _ = &clipboard.set_text(convert_coordinates(*point).unwrap());
+                            println!("copy {} to clipboard", convert_coordinates(*point).unwrap());
+                        }
+                        if ui.button("Add").clicked() {
+                            flight_plan_coordinates.push(format!("{} {}", convert_coordinates(*point).unwrap(), address));
+                            println!("Add {} to list of destinations", format!("{} {}", convert_coordinates(*point).unwrap(), address));
+                        }
+                        ui.hyperlink_to("Verify coordinates", url_from(*point));
+                    });
                 });
             }
         });
