@@ -64,8 +64,8 @@ impl eframe::App for FPLHelp {
             flight_plan_coordinates
         } = self;
         egui::CentralPanel::default().show(ctx, |ui| {
-            
-            egui::menu::bar(ui, |ui| {
+            ui.heading("Add an address");
+            ui.horizontal(|ui| {
                 ui.text_edit_singleline(address);
                 if ui.button("Convert").clicked() {
                     *coordinates = get_coordinates(address.clone()).unwrap_or_else(|err| {
@@ -99,6 +99,7 @@ impl eframe::App for FPLHelp {
 
             if flight_plan_coordinates.clone().len() != 0 { // if no coordinates, we don't show
                 ui.separator();
+                ui.heading("Your planned flight");
             }
 
             
