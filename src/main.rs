@@ -99,6 +99,7 @@ impl eframe::App for FPLHelp {
 
             
             if flight_plan_coordinates.clone().len() != 0 { // if no coordinates, we don't show
+                ui.add_space(12.0);
                 ui.separator();
                 ui.heading("Your planned flight");
             }  
