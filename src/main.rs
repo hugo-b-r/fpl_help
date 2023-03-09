@@ -97,44 +97,53 @@ impl eframe::App for FPLHelp {
                 });
             }
 
-            
-            if flight_plan_coordinates.clone().len() != 0 { // if no coordinates, we don't show
-                ui.add_space(12.0);
-                ui.separator();
-                ui.heading("Your planned flight");
-            }  
+            egui::ScrollArea::vertical().show(ui, |ui| {
+                if flight_plan_coordinates.clone().len() != 0 { // if no coordinates, we don't show
+                    ui.add_space(12.0);
+                    ui.separator();
+                    ui.heading("Your planned flight");
+                }  
 
-            for coordinates in flight_plan_coordinates.clone().iter_mut() {
+                for coordinates in flight_plan_coordinates.clone().iter_mut() {
+                    ui.horizontal(|ui| {
+                        ui.label((*coordinates).clone());
+                        ui.with_layout(egui::Layout::right_to_left(egui::Align::RIGHT), |ui| {
+                            if ui.button("Remove").clicked() {
+                                let index = flight_plan_coordinates.clone().iter().position(|x| *x == *coordinates).unwrap();
+                                flight_plan_coordinates.remove(index);
+                            }
+                            if ui.button("Copy coordinates").clicked() {
+                                let _ = &clipboard.set_text((*coordinates)[0..11].to_string().clone());
+                            }
+                            if ui.button("Copy all").clicked() {
+                                let _ = &clipboard.set_text((*coordinates).to_string().clone());
+                            }
+                        });
+                    });   
+                }
+
                 ui.horizontal(|ui| {
-                    ui.label((*coordinates).clone());
-                    ui.with_layout(egui::Layout::right_to_left(egui::Align::RIGHT), |ui| {
-                        if ui.button("Remove").clicked() {
-                            let index = flight_plan_coordinates.clone().iter().position(|x| *x == *coordinates).unwrap();
-                            flight_plan_coordinates.remove(index);
+                    let mut text: String = Default::default();
+                    let mut index = 0;
+                    for address in flight_plan_coordinates.clone().iter_mut() {
+                        if index >= 3 {
+                            text.push_str(format!("{}\n", address[0..11].to_string()).as_str());    
+                            index = 0;
+                        } else {
+                            text.push_str(format!("{} ", address[0..11].to_string()).as_str());
                         }
-                        if ui.button("Copy coordinates").clicked() {
-                            let _ = &clipboard.set_text((*coordinates)[0..11].to_string().clone());
-                        }
-                        if ui.button("Copy all").clicked() {
-                            let _ = &clipboard.set_text((*coordinates).to_string().clone());
-                        }
-                    });
-                });   
-            }
-
-            ui.horizontal(|ui| {
-                let mut text: String = Default::default();
-                for address in flight_plan_coordinates.clone().iter_mut() {
-                    text.push_str(format!("{} ", address[0..11].to_string()).as_str());
-                }
-
-                if text != "".to_string() {    
-                    ui.label(text.clone());
-                    if ui.button("Copy complete trip").clicked() {
-                        let _ = &clipboard.set_text(text);
+                        index += 1;
                     }
-                }
+
+                    if text != "".to_string() {    
+                        ui.label(text.clone());
+                        if ui.button("Copy complete trip").clicked() {
+                            let _ = &clipboard.set_text(text);
+                        }
+                    }
+                });
             });
+            
         });
     }
 }
