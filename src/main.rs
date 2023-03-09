@@ -81,7 +81,6 @@ impl eframe::App for FPLHelp {
                 });
                     
             }
-            ui.heading("Add an address");
             egui::menu::bar(ui, |ui| {
                 ui.text_edit_singleline(address);
                 if ui.button("Convert").clicked() {
