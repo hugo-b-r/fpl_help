@@ -64,12 +64,12 @@ impl eframe::App for FPLHelp {
             flight_plan_coordinates
         } = self;
         egui::CentralPanel::default().show(ctx, |ui| {
-            for coordinates in flight_plan_coordinates {
+            for coordinates in flight_plan_coordinates.clone().iter_mut() {
                 ui.horizontal(|ui| {
                     ui.label((*coordinates).clone());
 
                     if ui.button("Remove").clicked() {
-                        let index = flight_plan_coordinates.iter().position(|x| *x == coordinates).unwrap();
+                        let index = flight_plan_coordinates.iter().position(|x| *x == *coordinates).unwrap();
                         flight_plan_coordinates.remove(index);
                     }
                     if ui.button("Copy coordinates").clicked() {
