@@ -122,28 +122,25 @@ impl eframe::App for FPLHelp {
                     });   
                 }
 
-                ui.horizontal(|ui| {
-                    let mut text: String = Default::default();
-                    let mut index = 0;
-                    for address in flight_plan_coordinates.clone().iter_mut() {
-                        if index >= 3 {
-                            text.push_str(format!("{}\n", address[0..11].to_string()).as_str());    
-                            index = 0;
-                        } else {
-                            text.push_str(format!("{} ", address[0..11].to_string()).as_str());
-                        }
-                        index += 1;
-                    }
+                let mut text: String = Default::default();
+                let mut index = 0;
+                for address in flight_plan_coordinates.clone().iter_mut() {
+                    if index >= 3 {
+                        text.push_str(format!("{} ", address[0..11].to_string()).as_str());    
+                        index = 0;
+                    } else {
+                        text.push_str(format!("{} ", address[0..11].to_string()).as_str());
+                    }   
+                    index += 1;
+                }
 
-                    if text != "".to_string() {    
-                        ui.label(text.clone());
-                        if ui.button("Copy complete trip").clicked() {
-                            let _ = &clipboard.set_text(text);
-                        }
+                if text != "".to_string() {    
+                    ui.add(egui::TextEdit::multiline(&mut text));
+                    if ui.button("Copy complete trip").clicked() {
+                        let _ = &clipboard.set_text(text);
                     }
-                });
+                }
             });
-            
         });
     }
 }
