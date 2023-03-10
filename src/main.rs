@@ -63,6 +63,30 @@ impl eframe::App for FPLHelp {
             error,
             flight_plan_coordinates
         } = self;
+
+        let mut text: String = Default::default();
+        let mut index = 0;
+        for address in flight_plan_coordinates.clone().iter_mut() {
+            if index >= 3 {
+                text.push_str(format!("{} ", address[0..11].to_string()).as_str());    
+                index = 0;
+            } else {
+                text.push_str(format!("{} ", address[0..11].to_string()).as_str());
+            }   
+            index += 1;
+        }    
+        if text != "".to_string() {
+            egui::TopBottomPanel::bottom("trip_coordinates").show(ctx, |ui| {            
+                ui.add(egui::TextEdit::multiline(&mut text));
+                
+                ui.with_layout(egui::Layout::top_down(egui::Align::RIGHT), |ui| {
+                    if ui.button("Copy complete trip").clicked() {
+                        let _ = &clipboard.set_text(text);
+                    }
+                });
+            });
+        }
+
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Add an address");
             ui.horizontal(|ui| {
@@ -97,12 +121,13 @@ impl eframe::App for FPLHelp {
                 });
             }
 
+            if flight_plan_coordinates.clone().len() != 0 { // if no coordinates, we don't show
+                ui.add_space(12.0);
+                ui.separator();
+                ui.heading("Your planned flight");
+            }
+
             egui::ScrollArea::vertical().show(ui, |ui| {
-                if flight_plan_coordinates.clone().len() != 0 { // if no coordinates, we don't show
-                    ui.add_space(12.0);
-                    ui.separator();
-                    ui.heading("Your planned flight");
-                }  
 
                 for coordinates in flight_plan_coordinates.clone().iter_mut() {
                     ui.horizontal(|ui| {
@@ -122,25 +147,10 @@ impl eframe::App for FPLHelp {
                     });   
                 }
 
-                let mut text: String = Default::default();
-                let mut index = 0;
-                for address in flight_plan_coordinates.clone().iter_mut() {
-                    if index >= 3 {
-                        text.push_str(format!("{} ", address[0..11].to_string()).as_str());    
-                        index = 0;
-                    } else {
-                        text.push_str(format!("{} ", address[0..11].to_string()).as_str());
-                    }   
-                    index += 1;
-                }
-
-                if text != "".to_string() {    
-                    ui.add(egui::TextEdit::multiline(&mut text));
-                    if ui.button("Copy complete trip").clicked() {
-                        let _ = &clipboard.set_text(text);
-                    }
-                }
+                
             });
+
+            
         });
     }
 }
