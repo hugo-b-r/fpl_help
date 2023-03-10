@@ -77,7 +77,7 @@ impl eframe::App for FPLHelp {
         }    
         if text != "".to_string() {
             egui::TopBottomPanel::bottom("trip_coordinates").show(ctx, |ui| {            
-                ui.add(egui::TextEdit::multiline(&mut text));
+                ui.add_sized([egui::Ui::available_width(ui), 20.0], egui::TextEdit::multiline(&mut text));
                 
                 ui.with_layout(egui::Layout::top_down(egui::Align::RIGHT), |ui| {
                     if ui.button("Copy complete trip").clicked() {
