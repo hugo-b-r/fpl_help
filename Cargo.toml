@@ -3,6 +3,7 @@ name = "fpl_help"
 version = "0.4.0"
 edition = "2021"
 authors = ["Hugo Berthet-Rambaud <hugoberthetrambaud@outlook.com>"]
+description = "A simple tool to get coordinates for the making of a flight plan."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
