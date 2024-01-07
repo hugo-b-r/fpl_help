@@ -4,7 +4,7 @@ geocoding. This coordinates will be directly formatted to be used in an
 aeronautical flightplan.
 
 ## Using it
-Install (rust)[rust-lang.org] for your system.
+Install [rust](http://rust-lang.org) for your system.
 
 Then compile using:
 ```bash
