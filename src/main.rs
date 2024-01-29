@@ -68,14 +68,14 @@ impl eframe::App for FPLHelp {
         let mut index = 0;
         for address in flight_plan_coordinates.clone().iter_mut() {
             if index >= 3 {
-                text.push_str(format!("{} ", address[0..11].to_string()).as_str());    
+                text.push_str(format!("{} ", &address[0..11]).as_str());    
                 index = 0;
             } else {
-                text.push_str(format!("{} ", address[0..11].to_string()).as_str());
+                text.push_str(format!("{} ", &address[0..11]).as_str());
             }   
             index += 1;
         }    
-        if text != "".to_string() {
+        if text != *"" {
             egui::TopBottomPanel::bottom("trip_coordinates").show(ctx, |ui| {            
                 ui.add_sized([egui::Ui::available_width(ui), 20.0], egui::TextEdit::multiline(&mut text));
                 
@@ -121,7 +121,7 @@ impl eframe::App for FPLHelp {
                 });
             }
 
-            if flight_plan_coordinates.clone().len() != 0 { // if no coordinates, we don't show
+            if !flight_plan_coordinates.clone().is_empty() { // if no coordinates, we don't show
                 ui.add_space(12.0);
                 ui.separator();
                 ui.heading("Your planned flight");

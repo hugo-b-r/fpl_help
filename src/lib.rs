@@ -47,7 +47,7 @@ impl FPL {
 }
 
 pub fn get_coordinates(address: String) -> Result<Vec<Point<f64>>, String> {
-    if address != "" {
+    if !address.is_empty() {
         let osm = Openstreetmap::new();
 
         let output: Vec<Point<f64>> = osm.forward(&address).unwrap();
@@ -75,25 +75,17 @@ enum Orientation {
 }
 
 impl DegreesMinutesSeconds {
-    fn _is_latitude(self: Self) -> bool {
-        if self.bearing == Orientation::North || self.bearing == Orientation::South {
-            true
-        } else {
-            false
-        }
+    fn _is_latitude(self) -> bool {
+        self.bearing == Orientation::North || self.bearing == Orientation::South
     }
 
-    fn _is_longitude(self: Self) -> bool {
-        if self.bearing == Orientation::East || self.bearing == Orientation::West {
-            true
-        } else {
-            false
-        }
+    fn _is_longitude(self) -> bool {
+        self.bearing == Orientation::East || self.bearing == Orientation::West
     }
 }
 
 impl Orientation {
-    fn opposite(self: Self) -> Self {
+    fn opposite(self) -> Self {
         match self {
             Orientation::North => Orientation::South,
             Orientation::East => Orientation::West,
@@ -102,39 +94,23 @@ impl Orientation {
         }        
     }
 
-    fn _is_northern(self: Self) -> bool {
-        if self == Orientation::North {
-            true
-        } else {
-            false
-        }
+    fn _is_northern(self) -> bool {
+        self == Orientation::North
     }
 
     
-    fn _is_eastern(self: Self) -> bool {
-        if self == Orientation::East {
-            true
-        } else {
-            false
-        }
+    fn _is_eastern(self) -> bool {
+        self == Orientation::East
     }
 
     
-    fn is_southern(self: Self) -> bool {
-        if self == Orientation::South {
-            true
-        } else {
-            false
-        }
+    fn is_southern(self) -> bool {
+        self == Orientation::South
     }
 
     
-    fn is_western(self: Self) -> bool {
-        if self == Orientation::West {
-            true
-        } else {
-            false
-        }
+    fn is_western(self) -> bool {
+        self == Orientation::West
     }
 }
 
@@ -142,7 +118,7 @@ impl Orientation {
 fn dms_from_decimal(decimal: f64, mut bearing: Orientation) -> DegreesMinutesSeconds {
     let degrees = decimal.abs().trunc() as i32;
     let minutes = ((decimal.abs() - degrees as f64) * 60.0).trunc() as i32;
-    let _seconds = ((((decimal.abs() - degrees as f64) * 60.0) - minutes as f64) * 60.0).trunc() as f64;
+    let _seconds = ((((decimal.abs() - degrees as f64) * 60.0) - minutes as f64) * 60.0).trunc();
     if decimal < 0.0 {
         bearing = bearing.opposite();
     }
@@ -178,14 +154,14 @@ pub fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
         
 
     if longitude_dms.degrees < 10 {
-        longitude_deg_str = format!("00{}", longitude_dms.degrees.to_string());
+        longitude_deg_str = format!("00{}", longitude_dms.degrees);
     } else if longitude_dms.degrees < 100 { //longitude is max 180 compared to 90 for latitude
         longitude_deg_str = format!("0{}", longitude_dms.degrees);
     } else {
         longitude_deg_str = longitude_dms.degrees.to_string();
     }
     if longitude_dms.minutes < 10 {
-        longitude_min_str = format!("0{}", longitude_dms.minutes.to_string());
+        longitude_min_str = format!("0{}", longitude_dms.minutes);
     } else {
         longitude_min_str = longitude_dms.minutes.to_string();
     }
@@ -195,7 +171,7 @@ pub fn convert_coordinates(coordinates: Point<f64>) -> Result<String, String> {
         latitude_deg_str = latitude_dms.degrees.to_string();
     }
     if latitude_dms.minutes < 10 {
-        latitude_min_str = format!("0{}", latitude_dms.minutes.to_string());
+        latitude_min_str = format!("0{}", latitude_dms.minutes);
     } else {
         latitude_min_str = latitude_dms.minutes.to_string();
     }
@@ -230,7 +206,7 @@ pub fn get_list_coordinates_list(file: FPL) -> Result<String, String> {
         output_chars.next();
         output_chars.next_back();
         output = output_chars.as_str().to_string();
-        output.push_str("\n");
+        output.push('\n');
     }
 
     Ok( output )
