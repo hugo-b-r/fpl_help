@@ -3,6 +3,8 @@ C'est un petit outil fait pour obtenir les coordonnées d'une liste d'addresses
 grace à un technique dite de "geocoding". Les coordonnées sont directement
 formattées comme demandées dans un plan de vol.
 
+Il a été archivé car l'API de eframe est trop variable.
+
 ## L'utiliser
 Installez (rust)[rust-lang.org] pour votre système.
 
