@@ -6,15 +6,11 @@ use fpl_help::{convert_coordinates, get_coordinates, url_from};
 use geocoding::Point;
 
 fn main() -> eframe::Result<()> {
-    let native_options = eframe::NativeOptions {
-        initial_window_size: Some(egui::vec2(500.0, 700.0)),
-        min_window_size: Some(egui::vec2(480.0, 300.0)),
-        ..Default::default()
-    };
+    let native_options = eframe::NativeOptions::default();
     eframe::run_native(
         "FPL Help",
         native_options,
-        Box::new(|cc| Box::new(FPLHelp::new(cc))),
+        Box::new(|cc| Ok(Box::new(FPLHelp::new(cc)))),
     )
 }
 
